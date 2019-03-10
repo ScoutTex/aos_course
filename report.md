@@ -1,0 +1,37 @@
+## Report of Paper Reading - 2018214208 岳力  
+2019年3月10日
+- Summary of major innovations
+    - 设计了THE Multiprogramming System，一个单用户、多进程的操作系统
+    - 首次从物理存储空间(drum memory)和进程逻辑地址空间提出page和segment的概念
+    - 提出“进程是一些顺序执行的指令，所以暂停一个进程并不影响逻辑功能”，实际上是（首次提出？）进程的状态轮转调度模型
+    - THE系统实现了操作系统分层设计模型，0层最基础，5层最高，每层依赖其以下的层的功能。设计和验证过程都是由下至上逐层做的。
+        - level 0 进程轮转调度
+        - level 1 实现虚拟地址(segment)到物理地址(page)的映射（不清楚这里是否可以称为页表），本层之上不再需要关心page的实现
+        - level 2 处理键盘输入的中断处理，和控制台终端的显示
+        - level 3 处理进程的I/O流和buffer
+        - level 4 用户态程序
+        - level 5 用户(原文operator操作员，我认为是一般意义的计算机用户)
+- What the problems the paper mentioned?
+    - 充分发挥一个EL X8古董计算机的性能，为所在大学提供多进程计算服务
+    - 作为一段非常早期的操作系统相关工作，难度被低估、人手有限、经验不足
+- How about the important related works/papers?
+    - 本文没有引reference......
+- What are some intriguing aspects of the paper?
+    - 首次提出分层设计操作系统的概念，影响深远
+- How to test/compare/analyze the results?
+    - 能否正确的完成多进程任务？
+    - 能否测CPU利用率？
+- How can the research be improved?
+    - 加入多用户(multi-access)
+    - 系统使用ALGOL编写，运行效率值得怀疑？
+    - 编写过程没有太考虑留debug接口（当时是不是还没有Debug/Release版本的概念）
+    - 文中实现了比较原始的软件MMU，现在应该都是硬件加速的
+- If you write this paper, then how would you do?
+    - 加入系统层次结构图
+    - 给每一层加示例代码/伪代码
+    - 更详细地介绍硬件（在当代人看来这个计算机的部件十分陌生）
+- Did you test the results by yourself? If so,What’s your test Results?
+    - No
+    - 原文只分享了一些设计中遇到的困难、解决方法和经验，没有对系统本身做Evaluation
+- Give the survey paper list in the same area of the paper your reading.
+    - 还没有读其它操作系统相关文献
