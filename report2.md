@@ -1,37 +1,46 @@
 ## Report of Paper Reading - 2018214208 岳力  
-Scalable Kernel TCP Design and Implementation for Short-Lived Connections
-Xiaofeng Lin, Yu Chen, Xiaodong Li, Junjie Mao, Jiaquan He, Wei Xu, Yuanchun Shi
+**Scalable Kernel TCP Design and Implementation for Short-Lived Connections**  
+Xiaofeng Lin, Yu Chen, Xiaodong Li, Junjie Mao, Jiaquan He, Wei Xu, Yuanchun Shi  
+Published in **ASPLOS '16**  
 
 2019年4月28日
-- Summary of major innovations
-    - Presents Fastsocket, 
-    - Key designation:
-        1. Global Listen Table → Local Listen Table 
-        1. Global Established Table → Local Established Table
-        1. Receive Flow Deliver
-        1. Fastsocket-aware VFS
+### Summary of major innovations  
+- Presents **Fastsocket**, a BSD Socket-compatible and scalable kernel socket design, facing new application scenarios (Weibo):
+    - Growth of network bandwidth
+    - Increasing CPU cores
+    - More short-lived connections for apps
+- Key designation:
+    1. Global Listen Table → Local Listen Table 
+    1. Global Established Table → Local Established Table
+    1. Receive Flow Deliver
+    1. Fastsocket-aware VFS
+### What the problems the paper mentioned?
+- TCB Management  
+TCB (TCP Control Block) (sockets in linux) are managed in 2 global hash tables, *ListenTable* for passive conns, and *Established Table* for both active and passive conns. Bothtable is **global** originnally, shared by all CPU cores.
+- Lack of Connection Locality  
+While a Multi-core computer receiving packets. The incoming package will trigger NIC(Network Interface Controller) interrupt, which processed by the CPU core handle thatinterrupt. Somehow, applications are responsible for further processing, which could berunning on another core.  
+- Additional Overhead for Compatibility  
+Applications use sockets as FD (File Descripter) via VFS (Virtual File System).  
+### How about the important related works/papers?
+- TCB Management  
+    - Listen Table
+        - SO_REUSEPORT and Megapipe
+    - Established Table
+        - 
+- Lack of Connection Locality  
 
-- What the problems the paper mentioned?
-    - 充分发挥一个EL X8古董计算机的性能，为所在大学提供多进程计算服务
-    - 作为一段非常早期的操作系统相关工作，难度被低估、人手有限、经验不足
-- How about the important related works/papers?
-    - 本文没有引reference......
-- What are some intriguing aspects of the paper?
-    - 首次提出分层设计操作系统的概念，影响深远
-- How to test/compare/analyze the results?
-    - 能否正确的完成多进程任务？
-    - 能否测CPU利用率？
-- How can the research be improved?
-    - 加入多用户(multi-access)
-    - 系统使用ALGOL编写，运行效率值得怀疑？
-    - 编写过程没有太考虑留debug接口（当时是不是还没有Debug/Release版本的概念）
-    - 文中实现了比较原始的软件MMU，现在应该都是硬件加速的
-- If you write this paper, then how would you do?
-    - 加入系统层次结构图
-    - 给每一层加示例代码/伪代码
-    - 更详细地介绍硬件（在当代人看来这个计算机的部件十分陌生）
-- Did you test the results by yourself? If so,What’s your test Results?
-    - No
-    - 原文只分享了一些设计中遇到的困难、解决方法和经验，没有对系统本身做Evaluation
-- Give the survey paper list in the same area of the paper your reading.
-    - 还没有读其它操作系统相关文献
+- Additional Overhead for Compatibility  
+### What are some intriguing aspects of the paper?
+- 首次提出分层设计操作系统的概念，影响深远
+### How to test/compare/analyze the results?
+- 能否正确的完成多进程任务？
+- 能否测CPU利用率？
+### How can the research be improved?
+- TODO
+### If you write this paper, then how would you do?
+- TODO
+### Did you test the results by yourself? If so,What’s your test Results?
+- No
+- Open sourced: https://github.com/fastos/fastsocket
+### Give the survey paper list in the same area of the paper your reading.
+- NONE
